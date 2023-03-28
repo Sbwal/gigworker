@@ -31,11 +31,11 @@ giggerRouter.post('/', async (req, res) => {
     }
 });
 
-giggerRouter.get('/:gigId/workers', async (req, res) => {
+giggerRouter.get('/:gigId', async (req, res) => {
     const { gigId } = req.params;
 
     try {
-        const giggers = await Gigger.find({ gig: gigId }).populate('worker');
+        const giggers = await Gigger.findById({ gig: gigId }).populate('worker');
         res.status(200).send(giggers);
     } catch (err) {
         console.error(err);
@@ -43,23 +43,20 @@ giggerRouter.get('/:gigId/workers', async (req, res) => {
     }
 });
 
-giggerRouter.delete('/giggers/:giggerId/workers/:workerId', async (req, res) => {
+giggerRouter.delete('/:gigId/workers/:workerId', async (req, res) => {
     const { giggerId, workerId } = req.params;
 
     try {
-        const gigger = await Gigger.findById(giggerId);
-        const gig = await Gig.findById(gigger.gig);
+        const gigId = req.params.gigId;
+        const workerId = req.user.workerId;
 
-        // Remove worker from gigger
-        gigger.worker = null;
-        await gigger.save();
+        const result = await Gigger.deleteOne({ gig: gigId, worker: workerId });
 
-        // Decrement gigger count in gig
-        gig.giggercount -= 1;
-        await gig.save();
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Todo not found' });
+        }
 
-        // Return success response
-        res.status(200).send({ message: 'Worker removed from gigger successfully.' });
+        return res.json({ message: 'Todo deleted successfully' });
     } catch (err) {
         console.error(err);
         res.status(500).send({ message: 'Error removing worker from gigger.' });
