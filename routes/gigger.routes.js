@@ -32,14 +32,14 @@ giggerRouter.post('/', async (req, res) => {
 });
 
 giggerRouter.get('/:gigId', async (req, res) => {
-    const { gigId } = req.params;
-
     try {
-        const giggers = await Gigger.findById({ gig: gigId }).populate('worker');
-        res.status(200).send(giggers);
+        const { gigId } = req.params;
+        const giggers = await Gigger.find({ gig: gigId }).populate('worker');
+        const workers = giggers.map((gigger) => gigger.worker);
+        res.status(200).send(workers);
     } catch (err) {
         console.error(err);
-        res.status(500).send({ message: 'Error retrieving workers assigned to gig.' });
+        res.status(500).send({ message: 'Error retrieving workers for gig.' });
     }
 });
 
