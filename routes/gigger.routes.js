@@ -18,13 +18,13 @@ giggerRouter.post('/', async (req, res) => {
         }
 
         const gigger = new Gigger({ worker, gig });
-        await gigger.save();
+        const saveGigger = await gigger.save();
 
         // Update gig gigger count
         gig.giggercount += 1;
         await gig.save();
 
-        res.json({ message: 'Gigger added successfully', gigger });
+        res.json({ message: 'Gigger added successfully', saveGigger });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });

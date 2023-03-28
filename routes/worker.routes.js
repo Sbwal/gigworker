@@ -10,8 +10,8 @@ workerRouter.post('/', async (req, res) => {
             phone: req.body.phone,
             workerid: req.body.workerid
         });
-        await worker.save();
-        res.send(worker);
+        const savedWorker = await worker.save();
+        res.send(savedWorker);
     } catch (err) {
         console.log(err);
         res.status(500).send(err);

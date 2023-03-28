@@ -9,8 +9,8 @@ gigRouter.post('/', async (req, res) => {
             gigtype: req.body.gigtype,
             gigid: req.body.gigid
         });
-        await gig.save();
-        res.send(gig);
+        const saveGig = await gig.save();
+        res.send(saveGig);
     } catch (err) {
         console.log(err);
         res.status(500).send(err);
