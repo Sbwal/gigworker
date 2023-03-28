@@ -1,5 +1,5 @@
 const express = require('express');
-const { Worker } = require('./models/models');
+const { Worker } = require('../models/models');
 
 const workerRouter = express.Router();
 

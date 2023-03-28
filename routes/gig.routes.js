@@ -1,5 +1,5 @@
 const express = require('express');
-const { Gig } = require('./models/models');
+const { Gig } = require('../models/models');
 
 const gigRouter = express.Router();
 
