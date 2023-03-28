@@ -45,7 +45,7 @@ giggerRouter.get('/:gigId', async (req, res) => {
 
 giggerRouter.delete('/:gigId/workers/:workerId', async (req, res) => {
     try {
-        const { giggerId, workerId } = req.params;
+        const { gigId, workerId } = req.params;
 
         const result = await Gigger.deleteOne({ gig: gigId, worker: workerId });
 
